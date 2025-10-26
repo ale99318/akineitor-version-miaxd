@@ -96,38 +96,74 @@
     </div>
 
     <script>
-        const streamUrl = 'https://corsproxy.io/?https://dadtrzepve.a.pinggy.link/hls/159632.m3u8';
+        // URL original del stream
+        const originalUrl = 'https://dadtrzepve.a.pinggy.link/hls/159632.m3u8';
+        
+        // Proxies de respaldo en orden de prioridad
+        const proxies = [
+            '', // Intenta primero sin proxy
+            'https://api.allorigins.win/raw?url=',
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest='
+        ];
+
         const video = document.getElementById('videoPlayer');
         const loading = document.getElementById('loading');
+        let currentProxyIndex = 0;
+        let hls;
 
         video.addEventListener('loadeddata', () => {
             loading.style.display = 'none';
         });
 
-        if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(streamUrl);
-            hls.attachMedia(video);
-            
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                video.play().catch(e => console.log('Autoplay bloqueado:', e));
-            });
+        function tryNextProxy() {
+            if (currentProxyIndex >= proxies.length) {
+                console.error('Todos los proxies fallaron');
+                loading.innerHTML = '<p style="color:#ff0000">Error al cargar el stream</p>';
+                return;
+            }
 
-            hls.on(Hls.Events.ERROR, (event, data) => {
-                if (data.fatal) {
-                    if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
-                        hls.startLoad();
-                    } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-                        hls.recoverMediaError();
+            const streamUrl = proxies[currentProxyIndex] + encodeURIComponent(originalUrl);
+            console.log(`Intentando con: ${proxies[currentProxyIndex] || 'directo'}`);
+
+            if (Hls.isSupported()) {
+                if (hls) hls.destroy();
+                
+                hls = new Hls({
+                    enableWorker: true,
+                    xhrSetup: function(xhr) {
+                        xhr.timeout = 10000; // 10 segundos timeout
                     }
-                }
-            });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = streamUrl;
-            video.addEventListener('loadedmetadata', () => {
-                video.play().catch(e => console.log('Autoplay bloqueado:', e));
-            });
+                });
+                
+                hls.loadSource(streamUrl);
+                hls.attachMedia(video);
+                
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    console.log('Stream cargado correctamente');
+                    video.play().catch(e => console.log('Autoplay bloqueado:', e));
+                });
+
+                hls.on(Hls.Events.ERROR, (event, data) => {
+                    if (data.fatal) {
+                        console.error('Error fatal:', data.type);
+                        currentProxyIndex++;
+                        setTimeout(tryNextProxy, 1000);
+                    }
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = streamUrl;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play().catch(e => console.log('Autoplay bloqueado:', e));
+                });
+                video.addEventListener('error', () => {
+                    currentProxyIndex++;
+                    tryNextProxy();
+                });
+            }
         }
+
+        tryNextProxy();
     </script>
 </body>
 </html>
