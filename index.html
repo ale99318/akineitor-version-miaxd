@@ -3,167 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transmisión EN VIVO</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>Stream</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #1a1a1a;
-            color: #fff;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        .live-badge {
-            display: inline-block;
-            color: #ff0000;
-            font-weight: bold;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        #video-wrapper {
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        #videoPlayer {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .loading {
+        * { margin: 0; padding: 0; }
+        body { background: #000; }
+        iframe { 
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            border: 5px solid #333;
-            border-top: 5px solid #4CAF50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        .info {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            text-align: center;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⚽ Transmisión <span class="live-badge">● EN VIVO</span></h1>
-        
-        <div id="video-wrapper">
-            <div class="loading" id="loading"></div>
-            <video id="videoPlayer" controls autoplay muted playsinline></video>
-        </div>
-
-        <div class="info">
-            <p>📺 Disfruta de la transmisión en alta calidad</p>
-        </div>
-    </div>
-
-    <script>
-        // URL original del stream
-        const originalUrl = 'https://dadtrzepve.a.pinggy.link/hls/159632.m3u8';
-        
-        // Proxies de respaldo en orden de prioridad
-        const proxies = [
-            '', // Intenta primero sin proxy
-            'https://api.allorigins.win/raw?url=',
-            'https://corsproxy.io/?',
-            'https://api.codetabs.com/v1/proxy?quest='
-        ];
-
-        const video = document.getElementById('videoPlayer');
-        const loading = document.getElementById('loading');
-        let currentProxyIndex = 0;
-        let hls;
-
-        video.addEventListener('loadeddata', () => {
-            loading.style.display = 'none';
-        });
-
-        function tryNextProxy() {
-            if (currentProxyIndex >= proxies.length) {
-                console.error('Todos los proxies fallaron');
-                loading.innerHTML = '<p style="color:#ff0000">Error al cargar el stream</p>';
-                return;
-            }
-
-            const streamUrl = proxies[currentProxyIndex] + encodeURIComponent(originalUrl);
-            console.log(`Intentando con: ${proxies[currentProxyIndex] || 'directo'}`);
-
-            if (Hls.isSupported()) {
-                if (hls) hls.destroy();
-                
-                hls = new Hls({
-                    enableWorker: true,
-                    xhrSetup: function(xhr) {
-                        xhr.timeout = 10000; // 10 segundos timeout
-                    }
-                });
-                
-                hls.loadSource(streamUrl);
-                hls.attachMedia(video);
-                
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    console.log('Stream cargado correctamente');
-                    video.play().catch(e => console.log('Autoplay bloqueado:', e));
-                });
-
-                hls.on(Hls.Events.ERROR, (event, data) => {
-                    if (data.fatal) {
-                        console.error('Error fatal:', data.type);
-                        currentProxyIndex++;
-                        setTimeout(tryNextProxy, 1000);
-                    }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = streamUrl;
-                video.addEventListener('loadedmetadata', () => {
-                    video.play().catch(e => console.log('Autoplay bloqueado:', e));
-                });
-                video.addEventListener('error', () => {
-                    currentProxyIndex++;
-                    tryNextProxy();
-                });
-            }
-        }
-
-        tryNextProxy();
-    </script>
+    <iframe src="https://player.castr.io/live_aHR0cHM6Ly9kYWR0cnplcHZlLmEucGluZ2d5LmxpbmsuL2hscy8xNTk2MzIubTN1OA" allowfullscreen allow="autoplay"></iframe>
 </body>
 </html>
