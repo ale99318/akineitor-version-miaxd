@@ -1,152 +1,159 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>¿Quién soy? — Adivinador </title>
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#ffb86b;--muted:#98a8bf}
-    *{box-sizing:border-box}
-    body{font-family:Inter,system-ui,Segoe UI,Arial;background:linear-gradient(180deg,#071023 0%,#0b1a2b 100%);color:#e6eef8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{width:960px;max-width:100%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));border-radius:12px;padding:24px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
-    h1{margin:0 0 8px;font-size:22px}
-    p.lead{margin:0 0 18px;color:var(--muted)}
-    .row{display:flex;gap:12px}
-    .col{flex:1}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-    button{background:linear-gradient(90deg,var(--accent),#ff7a7a);border:none;padding:10px 14px;border-radius:10px;color:#061223;font-weight:700;cursor:pointer}
-    .result{margin-top:18px;padding:16px;border-radius:10px;background:rgba(255,255,255,0.02);min-height:84px}
-    .small{font-size:13px;color:var(--muted)}
-    .footer{margin-top:12px;font-size:12px;color:var(--muted)}
-    .chip{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);margin-right:6px}
-    .controls{display:flex;gap:8px;align-items:center}
-    .preset-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .preset-buttons button{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px;font-weight:600}
-    @media(max-width:640px){.row{flex-direction:column}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmisión Deportiva EN VIVO</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script type='text/javascript' src='//pl27458422.effectivegatecpm.com/9f/ad/aa/9fadaacd147b7764a274c4d38f00b281.js'></script>
+
+    <style>
+        /* --- ESTILOS DE DISEÑO DEPORTIVO --- */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a; /* Fondo oscuro */
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px; /* Ancho máximo del contenido */
+            margin: 0 auto; /* Centrado */
+        }
+
+        /* --- ZONA DE ANUNCIOS SUPERIOR --- */
+        .ad-container-top {
+            background-color: #111;
+            padding: 10px 0;
+            text-align: center;
+            min-height: 90px;
+            margin-bottom: 15px;
+        }
+
+        /* --- CABECERA DEPORTIVA --- */
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            border-bottom: 4px solid #4CAF50; /* Verde "césped" */
+        }
+
+        .header h1 {
+            font-family: 'Arial Black', 'Impact', sans-serif;
+            font-size: 2.5em;
+            color: #ffffff;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .live-badge {
+            color: #ff0000; /* Rojo vivo */
+            font-size: 1.2em;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* --- REPRODUCTOR DE VIDEO --- */
+        #video-wrapper {
+            margin-top: 20px;
+            background-color: #000;
+            border: 2px solid #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #videoPlayer {
+            width: 100%;
+            height: auto;
+        }
+
+        /* --- ZONA DE ANUNCIOS INFERIOR --- */
+        .ad-container-bottom {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #222;
+        }
+
+        /* --- PIE DE PÁGINA --- */
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 20px;
+            color: #777;
+            font-size: 0.9em;
+            border-top: 1px solid #333;
+        }
+    </style>
 </head>
 <body>
-  <main class="card" role="main">
-    <h1>¿Quién soy? — Adivinador (solo por diversión)</h1>
-    <p class="lead">Este sitio <strong>no adivina</strong> tu identidad real. soy un vidente profesionalxd. No compartas información sensible.</p>
 
-    <div class="row">
-      <div class="col">
-        <label for="nameHint">Pista (opcional)</label>
-        <input id="nameHint" placeholder="Escribe algo: tu hobby, color favorito, ciudad..." />
-      </div>
-      <div class="col">
-        <label for="mood">Estado de ánimo</label>
-        <select id="mood">
-          <option value="mysterious">Misterioso</option>
-          <option value="funny">Divertido</option>
-          <option value="serious">Serio</option>
-          <option value="random">Aleatorio</option>
-        </select>
-      </div>
+    <div class="ad-container-top">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'a6c29732eed562ce6c743af0a3b60273',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/a6c29732eed562ce6c743af0a3b60273/invoke.js"></script>
     </div>
 
-    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <div class="controls">
-        <button id="guessBtn">Adivina mi identidad</button>
-        <button id="resetBtn" style="background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03);">Reiniciar</button>
-      </div>
-      <div style="margin-left:auto" class="small">Versión demo • No recopila datos</div>
+    <div class="container">
+
+        <div class="header">
+            <h1>Transmisión <span class="live-badge">● EN VIVO</span></h1>
+        </div>
+
+        <div id="video-wrapper">
+            <video id="videoPlayer" controls autoplay muted></video>
+        </div>
+
+        <div class="ad-container-bottom">
+            <script async="async" data-cfasync="false" src="//pl27458414.effectivegatecpm.com/2cab1d61c2dc9d7d47e9cefc513235df/invoke.js"></script>
+            <div id="container-2cab1d61c2dc9d7d47e9cefc513235df"></div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 - Todos los derechos reservados.</p>
+        </div>
+
     </div>
 
-    <!-- Preguntas programadas -->
-    <section style="margin-top:12px">
-      <label class="small">Preguntas</label>
-      <div class="preset-buttons">
-        <button data-q="nombre">Adivinar mi nombre</button>
-        <button data-q="edad">Adivinar mi edad</button>
-        <button data-q="ubicacion">Adivinar dónde vivo</button>
-        <button data-q="comida">Adivinar qué comí hoy</button>
-      </div>
-    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- ¡IMPORTANTE! CAMBIA ESTE LINK ---
+            // Aquí debes pegar tu link de Pinggy o cualquier link .m3u8
+            var streamUrl = 'http://dadtrzepve.a.pinggy.link/hls/159632.m3u8'; 
+            // (He dejado el último link que usamos como ejemplo)
+            
+            var video = document.getElementById('videoPlayer');
 
-    <section class="result" id="result" aria-live="polite">
-      <div class="small">Pulsa <strong>Adivina mi identidad</strong> o usa las preguntas programadas para ver respuestas predefinidas.</div>
-    </section>
-
-    <div class="footer">
-      <span class="chip">Hecho con stylo</span>
-      <span class="chip">No recopila datos</span>
-      <span class="chip">Para entretenimiento</span>
-    </div>
-  </main>
-
-  <script>
-    // Plantillas originales
-    const templates = [
-      "Eres <strong>la sombra urbana</strong> — vives entre calles y describirías tu día con: {hint}",
-      "Eres <strong>el/la gourmet</strong> — siempre buscas el mejor sabor. Tu pista favorita: {hint}",
-      "Eres un(a) <strong>streamer</strong> secreto(a) que se emociona por {hint}",
-      "Eres <strong>el/la viajero(a)</strong> — tu última parada fue {hint}",
-      "Eres <strong>la persona que ríe primero</strong> — tu humor: {hint}",
-      "Eres <strong>un misterio</strong>. Lo único que sabemos es: {hint}",
-      "Eres <strong>el programador</strong> que siempre tiene café y dice: {hint}",
-      "Eres <strong>la leyenda local</strong> — todos hablan de tu {hint}",
-      "Eres <strong>un perfil anónimo</strong> que prefiere silencio y vive cerca de {hint}",
-      "Eres <strong>un explorador nocturno</strong> — cuando cae la noche buscas {hint}"
-    ];
-
-    // Preguntas programadas — respuestas proporcionadas por el usuario
-    const programmedAnswers = {
-      nombre: 'Sandi Carolina',
-      edad: '23 años — cumples el 7 de febrero',
-      ubicacion: 'Mmmmmm... estás muy lejos para saber eso, no encuentro tu ubicación',
-      comida: 'Tallarines'
-    };
-
-    const moods = {
-      mysterious: (s)=> s.toUpperCase().split('').reverse().join(''),
-      funny: (s)=> '😂 ' + s + ' 😂',
-      serious: (s)=> s.replace(/(yo|mi|me)/gi,'').trim(),
-      random: (s)=> s
-    }
-
-    function pickTemplate(hint, mood){
-      const t = templates[Math.floor(Math.random()*templates.length)];
-      const processed = (moods[mood]||moods.random)(hint||'...') || '...';
-      return t.replace('{hint}', processed);
-    }
-
-    document.getElementById('guessBtn').addEventListener('click', ()=>{
-      const hint = document.getElementById('nameHint').value.trim();
-      const mood = document.getElementById('mood').value;
-      const result = document.getElementById('result');
-
-      result.innerHTML = '<div class="small">Analizando pistas... <em>procesando identidad</em></div>';
-      setTimeout(()=>{
-        const guess = pickTemplate(hint, mood);
-        const extra = Math.random() < 0.25 ? '<div class="small" style="margin-top:8px;color:var(--muted)">Pista secreta: te llamas como tu personaje favorito ✨</div>' : '';
-        result.innerHTML = `<div style="font-size:16px">${guess}</div>${extra}`;
-      }, 900 + Math.random()*900);
-    });
-
-    document.getElementById('resetBtn').addEventListener('click', ()=>{
-      document.getElementById('nameHint').value = '';
-      document.getElementById('mood').value = 'mysterious';
-      document.getElementById('result').innerHTML = '<div class="small">Pulsa <strong>Adivina mi identidad</strong> para empezar. Sé creativo con tus pistas.</div>';
-    });
-
-    // Manejo de botones programados
-    document.querySelectorAll('.preset-buttons button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const key = btn.getAttribute('data-q');
-        const ans = programmedAnswers[key] || 'No hay respuesta programada';
-        const result = document.getElementById('result');
-        // Simular análisis
-        result.innerHTML = '<div class="small">Analizando pregunta programada...</div>';
-        setTimeout(()=>{
-          result.innerHTML = `<div style="font-size:16px">${ans}</div>`;
-        }, 600 + Math.random()*600);
-      });
-    });
-
-    console.log('AdivinaTuIdentidad demo cargado — offline. Preguntas programadas listas.');
-  </script>
-</body>
-</html>
+            if (Hls.isSupported()) {
+                // Para Chrome, Firefox, Edge, etc.
+                var hls = new Hls();
+                hls.loadSource(streamUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Para Safari (iOS, macOS)
+                video.src = streamUrl;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                });
+            }
+        });
+    </TML>
