@@ -10,87 +10,271 @@
     <script type='text/javascript' src='//pl27458422.effectivegatecpm.com/9f/ad/aa/9fadaacd147b7764a274c4d38f00b281.js'></script>
 
     <style>
-        /* --- ESTILOS DE DISEÑO DEPORTIVO --- */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a; /* Fondo oscuro */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #ffffff;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
         }
 
         .container {
-            width: 90%;
-            max-width: 900px; /* Ancho máximo del contenido */
-            margin: 0 auto; /* Centrado */
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
         }
 
         /* --- ZONA DE ANUNCIOS SUPERIOR --- */
         .ad-container-top {
-            background-color: #111;
-            padding: 10px 0;
+            background: linear-gradient(to bottom, #000000, #1a1a1a);
+            padding: 15px 10px;
             text-align: center;
-            min-height: 90px;
-            margin-bottom: 15px;
+            min-height: 100px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* --- CABECERA DEPORTIVA --- */
         .header {
             text-align: center;
-            padding: 10px 0;
-            border-bottom: 4px solid #4CAF50; /* Verde "césped" */
+            padding: 20px 10px;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
         .header h1 {
             font-family: 'Arial Black', 'Impact', sans-serif;
-            font-size: 2.5em;
+            font-size: clamp(1.5em, 5vw, 3em);
             color: #ffffff;
             text-transform: uppercase;
             margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .live-badge {
-            color: #ff0000; /* Rojo vivo */
-            font-size: 1.2em;
+            display: inline-block;
+            color: #ff0000;
+            font-size: clamp(1em, 3vw, 1.3em);
             font-weight: bold;
             animation: pulse 1.5s infinite;
+            padding: 5px 15px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 20px;
+            margin-top: 10px;
         }
 
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- ANUNCIO ANTES DEL VIDEO --- */
+        .ad-before-video {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 10px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 8px;
+            min-height: 280px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* --- LAYOUT RESPONSIVO --- */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Para pantallas grandes (PC) */
+        @media (min-width: 992px) {
+            .content-wrapper {
+                grid-template-columns: 1fr 300px;
+            }
         }
 
         /* --- REPRODUCTOR DE VIDEO --- */
         #video-wrapper {
-            margin-top: 20px;
             background-color: #000;
-            border: 2px solid #333;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            position: relative;
         }
 
         #videoPlayer {
             width: 100%;
             height: auto;
+            display: block;
+            aspect-ratio: 16/9;
         }
 
-        /* --- ZONA DE ANUNCIOS INFERIOR --- */
-        .ad-container-bottom {
+        .video-info {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .video-info h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #4CAF50;
+        }
+
+        .video-info p {
+            margin: 5px 0;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        /* --- SIDEBAR CON ANUNCIOS (STICKY EN PC) --- */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar {
+                position: sticky;
+                top: 20px;
+                align-self: start;
+            }
+        }
+
+        .ad-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 280px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .ad-label {
+            color: #666;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- ANUNCIO DESPUÉS DEL VIDEO --- */
+        .ad-after-video {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 10px;
             text-align: center;
             margin: 20px 0;
-            padding: 10px;
-            background-color: #222;
+            border-radius: 8px;
+            min-height: 280px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
-        /* --- PIE DE PÁGINA --- */
+        /* --- PIE DE PÁGINA COMPACTO --- */
         .footer {
             text-align: center;
-            padding: 20px 0;
-            margin-top: 20px;
+            padding: 20px 10px;
+            margin-top: 30px;
             color: #777;
-            font-size: 0.9em;
-            border-top: 1px solid #333;
+            font-size: 0.85em;
+            border-top: 2px solid #333;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .footer p {
+            margin: 3px 0;
+        }
+
+        /* --- MEJORAS PARA MÓVIL --- */
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 0 5px;
+            }
+
+            .header {
+                padding: 15px 10px;
+                margin-bottom: 15px;
+            }
+
+            #video-wrapper {
+                border-radius: 0;
+            }
+
+            .ad-container-top,
+            .ad-before-video,
+            .ad-after-video {
+                border-radius: 0;
+                margin-left: -5px;
+                margin-right: -5px;
+                width: calc(100% + 10px);
+            }
+        }
+
+        /* --- LOADING SPINNER --- */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 5px solid #333;
+            border-top: 5px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* --- CALL TO ACTION --- */
+        .cta-box {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .cta-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .cta-box p {
+            margin: 0;
+            font-size: 0.95em;
+            opacity: 0.95;
         }
     </style>
 </head>
@@ -112,19 +296,69 @@
     <div class="container">
 
         <div class="header">
-            <h1>Transmisión <span class="live-badge">● EN VIVO</span></h1>
+            <h1>⚽ Transmisión Deportiva</h1>
+            <div class="live-badge">● EN VIVO</div>
         </div>
 
-        <div id="video-wrapper">
-            <video id="videoPlayer" controls autoplay muted></video>
-        </div>
-
-        <div class="ad-container-bottom">
+        <!-- ANUNCIO JUSTO ANTES DEL VIDEO -->
+        <div class="ad-before-video">
+            <div class="ad-label">Publicidad - La transmisión comenzará en breve</div>
             <script async="async" data-cfasync="false" src="//pl27458414.effectivegatecpm.com/2cab1d61c2dc9d7d47e9cefc513235df/invoke.js"></script>
             <div id="container-2cab1d61c2dc9d7d47e9cefc513235df"></div>
         </div>
 
+        <div class="content-wrapper">
+            <div class="main-content">
+                <div id="video-wrapper">
+                    <div class="loading" id="loading"></div>
+                    <video id="videoPlayer" controls autoplay muted playsinline></video>
+                </div>
+
+                <div class="video-info">
+                    <h2>📺 Disfruta del partido en vivo</h2>
+                    <p>Transmisión en alta calidad. Haz clic en pantalla completa para una mejor experiencia.</p>
+                </div>
+
+                <!-- CTA después del video -->
+                <div class="cta-box">
+                    <h3>🔥 ¡No te pierdas ningún partido!</h3>
+                    <p>Transmisiones en vivo todos los días</p>
+                </div>
+
+                <!-- ANUNCIO DESPUÉS DEL VIDEO -->
+                <div class="ad-after-video">
+                    <div class="ad-label">Publicidad</div>
+                    <script async="async" data-cfasync="false" src="//pl27458414.effectivegatecpm.com/2cab1d61c2dc9d7d47e9cefc513235df/invoke.js"></script>
+                    <div id="container-2cab1d61c2dc9d7d47e9cefc513235df"></div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR STICKY (SE VE TODO EL TIEMPO EN PC) -->
+            <aside class="sidebar">
+                <div class="ad-box">
+                    <div class="ad-label">Publicidad</div>
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : 'a6c29732eed562ce6c743af0a3b60273',
+                            'format' : 'iframe',
+                            'height' : 250,
+                            'width' : 300,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="//www.highperformanceformat.com/a6c29732eed562ce6c743af0a3b60273/invoke.js"></script>
+                </div>
+
+                <div class="ad-box">
+                    <div class="ad-label">Publicidad</div>
+                    <script async="async" data-cfasync="false" src="//pl27458414.effectivegatecpm.com/2cab1d61c2dc9d7d47e9cefc513235df/invoke.js"></script>
+                    <div id="container-2cab1d61c2dc9d7d47e9cefc513235df"></div>
+                </div>
+            </aside>
+        </div>
+
         <div class="footer">
+            <p><strong>⚽ Transmisión Deportiva EN VIVO</strong></p>
             <p>&copy; 2025 - Todos los derechos reservados.</p>
         </div>
 
@@ -134,26 +368,72 @@
         document.addEventListener('DOMContentLoaded', function() {
             
             // --- ¡IMPORTANTE! CAMBIA ESTE LINK ---
-            // Aquí debes pegar tu link de Pinggy o cualquier link .m3u8
             var streamUrl = 'http://dadtrzepve.a.pinggy.link/hls/159632.m3u8'; 
-            // (He dejado el último link que usamos como ejemplo)
             
             var video = document.getElementById('videoPlayer');
+            var loading = document.getElementById('loading');
+
+            // Ocultar loading cuando el video esté listo
+            video.addEventListener('loadeddata', function() {
+                loading.style.display = 'none';
+            });
 
             if (Hls.isSupported()) {
-                // Para Chrome, Firefox, Edge, etc.
-                var hls = new Hls();
+                var hls = new Hls({
+                    enableWorker: true,
+                    lowLatencyMode: true,
+                    backBufferLength: 90
+                });
+                
                 hls.loadSource(streamUrl);
                 hls.attachMedia(video);
+                
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
+                    video.play().catch(function(error) {
+                        console.log('Autoplay prevented:', error);
+                    });
                 });
+
+                hls.on(Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        switch(data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                console.log('Network error, trying to recover...');
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                console.log('Media error, trying to recover...');
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                hls.destroy();
+                                break;
+                        }
+                    }
+                });
+                
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // Para Safari (iOS, macOS)
                 video.src = streamUrl;
                 video.addEventListener('loadedmetadata', function() {
-                    video.play();
+                    video.play().catch(function(error) {
+                        console.log('Autoplay prevented:', error);
+                    });
                 });
             }
+
+            // Mantener la pantalla activa en móviles
+            if ('wakeLock' in navigator) {
+                let wakeLock = null;
+                const requestWakeLock = async () => {
+                    try {
+                        wakeLock = await navigator.wakeLock.request('screen');
+                    } catch (err) {
+                        console.log('Wake Lock error:', err);
+                    }
+                };
+                requestWakeLock();
+            }
         });
-    </TML>
+    </script>
+</body>
+</html>
