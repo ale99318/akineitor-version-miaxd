@@ -3,37 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stream</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>Escáner de Huella Digital</title>
     <style>
-        * { margin: 0; padding: 0; }
-        body { background: #000; overflow: hidden; }
-        video { 
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .scanner-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .fingerprint-area {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fingerprint-area:hover {
+            transform: scale(1.05);
+        }
+
+        .fingerprint-icon {
+            font-size: 80px;
+            color: white;
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.8);
+            top: 0;
+            display: none;
+            animation: scan 2s ease-in-out;
+        }
+
+        @keyframes scan {
+            0%, 100% { top: 0; }
+            50% { top: 100%; }
+        }
+
+        .scanning .scan-line {
+            display: block;
+        }
+
+        .status-text {
+            color: #666;
+            font-size: 16px;
+            margin-top: 20px;
+            min-height: 24px;
+        }
+
+        .scanning-text {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .contract-container {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .contract-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .contract-header h2 {
+            color: #667eea;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .contract-header .date {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .contract-body {
+            color: #333;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .contract-body p {
+            margin-bottom: 15px;
+        }
+
+        .bride-name {
+            color: #764ba2;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .requirements {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .requirements h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .requirement-item::before {
+            content: "💕";
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+            text-align: center;
+        }
+
+        .signature-box {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .fingerprint-stamp {
+            font-size: 40px;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .signature-text {
+            color: #764ba2;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .heart-decoration {
+            font-size: 30px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .cancel-button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+
+        .cancel-button:active {
+            transform: scale(0.95);
+        }
+
+        .cancel-message {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .cancel-message.show {
+            display: flex;
+        }
+
+        .message-content {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 90%;
+            animation: bounceIn 0.5s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .message-content h3 {
+            color: #ff6b6b;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .message-content p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <video id="v" controls autoplay></video>
+    <div class="container">
+        <div class="scanner-container" id="scanner">
+            <h1>Sistema de Autenticación</h1>
+            <p class="subtitle">Por favor, coloca tu huella digital</p>
+            
+            <div class="fingerprint-area" id="fingerprint" onclick="startScan()">
+                <div class="fingerprint-icon">👆</div>
+                <div class="scan-line"></div>
+            </div>
+            
+            <p class="status-text" id="statusText">Toca el sensor para escanear</p>
+        </div>
+
+        <div class="contract-container" id="contract">
+            <div class="contract-header">
+                <h2>📜 CONTRATO MATRIMONIAL 📜</h2>
+                <p class="date" id="currentDate"></p>
+                <div class="heart-decoration">❤️</div>
+            </div>
+
+            <div class="contract-body">
+                <p>Por medio del presente documento, yo <span class="bride-name">CORINA</span>, identificada mediante huella digital verificada, acepto voluntariamente y con mucho amor los siguientes términos y condiciones:</p>
+
+                <div class="requirements">
+                    <h3>✨ CLÁUSULAS DEL AMOR ✨</h3>
+                    
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 1:</strong> Me comprometo a dar besitos cada vez que me los pidas, sin importar la hora o el lugar.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 2:</strong> Prometo darte abrazos apretados cuando estés triste o cuando simplemente quieras sentirte querido.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 3:</strong> Acepto ser tu cómplice en todas las aventuras, desde las más pequeñas hasta las más grandes.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 4:</strong> Me comprometo a cocinar tus platillos favoritos y a compartir contigo hasta el último bocado.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 5:</strong> Prometo reírme de tus chistes, incluso de los más malos, porque tu sonrisa lo vale todo.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 6:</strong> Acepto ver películas románticas contigo y no quejarme (mucho) cuando llores.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 7:</strong> Me comprometo a decirte "te amo" todos los días y a demostrártelo con acciones.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 8:</strong> Prometo estar a tu lado en las buenas, en las malas, y en todas las que vengan.</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 9:</strong> Te dejaré ir a juergear y tomar con tus amigos, porque confío en ti y sé que siempre volverás a casa. 🍺</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 10:</strong> Me comprometo a cuidarte cuando tengas malestares, prepararte caldito caliente y mimarte hasta que te sientas mejor. 🍲</span>
+                    </div>
+
+                    <div class="requirement-item">
+                        <span><strong>ARTÍCULO 11:</strong> Acepto darte pecho cuando tú lo desees, sin preguntas ni condiciones. 😏💕</span>
+                    </div>
+                </div>
+
+                <p style="text-align: center; font-style: italic; color: #666; margin-top: 20px;">
+                    Este contrato es válido desde ahora y hasta que el universo deje de existir. 💫
+                </p>
+
+                <button class="cancel-button" id="cancelBtn">
+                    ❌ Anular Contrato
+                </button>
+
+                <div class="cancel-message" id="cancelMessage">
+                    <div class="message-content">
+                        <div style="font-size: 50px; margin-bottom: 10px;">🔒</div>
+                        <h3>¡ACCESO DENEGADO!</h3>
+                        <p>Usted es MÍA y NO puede anular este contrato.</p>
+                        <p style="font-size: 12px; color: #999; margin-top: 10px;">Contrato permanente e irrevocable 💕</p>
+                    </div>
+                </div>
+
+                <div class="signature-section">
+                    <p style="color: #999; font-size: 13px;">Firmado digitalmente mediante huella biométrica:</p>
+                    <div class="signature-box">
+                        <div class="fingerprint-stamp">🔒</div>
+                        <p class="signature-text">Corina</p>
+                        <p style="font-size: 12px; color: #999;">Huella Digital Verificada</p>
+                        <span class="verified-badge">✓ AUTENTICADO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const v = document.getElementById('v');
-        const url = 'https://dadtrzepve.a.pinggy.link/hls/159632.m3u8';
-        
-        if (Hls.isSupported()) {
-            const hls = new Hls({
-                xhrSetup: xhr => {
-                    xhr.withCredentials = false;
-                }
-            });
-            hls.loadSource(url);
-            hls.attachMedia(v);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => v.play());
-        } else if (v.canPlayType('application/vnd.apple.mpegurl')) {
-            v.src = url;
-            v.play();
+        function startScan() {
+            const fingerprint = document.getElementById('fingerprint');
+            const statusText = document.getElementById('statusText');
+            const scanner = document.getElementById('scanner');
+            const contract = document.getElementById('contract');
+            
+            fingerprint.classList.add('scanning');
+            statusText.innerHTML = '<span class="scanning-text">⚡ Escaneando huella...</span>';
+            
+            setTimeout(() => {
+                statusText.innerHTML = '<span class="scanning-text">✓ Analizando patrón biométrico...</span>';
+            }, 1000);
+
+            setTimeout(() => {
+                statusText.innerHTML = '<span style="color: #4CAF50; font-weight: bold;">✓ Identidad verificada: CORINA</span>';
+            }, 2000);
+
+            setTimeout(() => {
+                scanner.style.display = 'none';
+                contract.style.display = 'block';
+                
+                const today = new Date();
+                const dateStr = today.toLocaleDateString('es-ES', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                document.getElementById('currentDate').textContent = dateStr;
+            }, 3000);
         }
+
+        function tryCancel() {
+            const cancelMessage = document.getElementById('cancelMessage');
+            cancelMessage.classList.add('show');
+            
+            // Vibrar el teléfono si está disponible
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200]);
+            }
+            
+            setTimeout(() => {
+                cancelMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        // Agregar event listener al botón
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', tryCancel);
+            }
+        });
+
+        // Cerrar mensaje al tocar fuera
+        document.addEventListener('click', function(e) {
+            const cancelMessage = document.getElementById('cancelMessage');
+            if (e.target === cancelMessage) {
+                cancelMessage.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>
